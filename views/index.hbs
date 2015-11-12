@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+
+<!-- Using the Solutions code just to see what it looks like -->
+
 <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -42,16 +45,23 @@
             
             <!-- handlebars template -->
             <script id="todos-template" type="text/x-handlebars-template">
+
+            // Say what? 
+
             \{{#each todos}}
-            <li class="list-group-item todo" data-id="\{{_id}}">
+            
+            <li class="list-group-item todo" data-id="\{{id}}">
               <!-- todo label (task) -->
               <span class="label label-default">\{{task}}</span>
+
+              // Ah for real?
               
               <!-- todo description -->
               \{{description}}
               <div class="pull-right">
                 <!-- pencil icon to toggle update form -->
-                <a href="javascript:void(0)" data-toggle="collapse" data-target="#update-\{{_id}}">
+
+                <a href="javascript:void(0)" data-toggle="collapse" data-target="#update-\{{id}}">
                   <span class="glyphicon glyphicon-pencil"></span>
                 </a>
                 
@@ -62,7 +72,7 @@
               </div>
               
               <!-- form to update todo -->
-              <div class="collapse" id="update-\{{_id}}">
+              <div class="collapse" id="update-\{{id}}">
                 <br>
                 <form class="form-inline update-todo">
                   <div class="form-group">

@@ -91,15 +91,15 @@ app.put('/api/todos/:id', function(req, res) {
 	res.json(todoToUpdate);
 });
 
-hbs.registerHelper('list', function(context, options) {
-	var ret = "<ul>";
+// hbs.registerHelper('list', function(context, options) {
+// 	var ret = "<ul>";
 
-	for (var i = 0, j = context.length; i < j; i++) {
-		ret = ret + "<li>" + options.fn(context[i]) + "</li>";
-	}
+// 	for (var i = 0, j = context.length; i < j; i++) {
+// 		ret = ret + "<li>" + options.fn(context[i]) + "</li>";
+// 	}
 
-	return ret + "</ul>";
-});
+// 	return ret + "</ul>";
+// });
 
 var server = app.listen(process.env.PORT || 3000, function() {
 	console.log('Example app listening at http://localhost:3000/');
