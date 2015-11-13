@@ -13,8 +13,6 @@ var Todo = require('./models/todo');
 
 // This is the connection string, with the path to the named db
 
-app.use(express.static(__dirname + '/public'));
-
 // app.use('/static', express.static(__dirname + '/public'));
 
 mongoose.connect('mongodb://localhost/hellafresh');
@@ -25,6 +23,10 @@ var express = require('express');
 var app = express();
 
 var bodyParser = require('body-parser');
+
+// app.use(express.static(__dirname + '/public'));
+
+app.use(express.static('public'));
 
 app.set('view engine', 'hbs');
 

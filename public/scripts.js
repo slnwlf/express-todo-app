@@ -1,23 +1,39 @@
-var source = $('#todos-template').html();
-var template = Handlebars.compile(source);
+$(function() {
 
-$.get('/api/todos', function (data) {
-	console.log(data.todos);
+	var source = $('#todos-template').html();
+	var template = Handlebars.compile(source);
 
-	var todoHtml = template({ todos: data.todos });
-	$('#todo-list').append(todoHtml);
-});
-$.on('submit', '.update-todo', function(event) {
-			event.preventDefault();
+	// array to hold todo data from API
+	var allTodos = [];
 
-			// POST request to create new book
-			$.post(baseUrl, newTodo, function(data) {
-				console.log(data);
+	$.get('/api/todos', function(data) {
+		console.log(data.todos);
 
-				// add new book to `allBooks`
-				allTodos.push(data);
-
-				// render all books to view
-				render();
-			});
+		var todoHtml = template({
+			todos: data.todos
 		});
+		$('#todo-list').append(todoHtml);
+	});
+
+	// form to create new todo
+	var $createTodo = $('#create-todo');
+
+
+	$createTodo.on('submit', function(event) {
+		event.preventDefault();
+
+		// serialze form data
+		var newTodo = $(this).serialize();
+
+		// POST request to create new todo
+		$.post('/api/todos', newTodo, function(data) {
+			console.log(data);
+
+			// add new book to `allTodos`
+			allTodos.push(data);
+
+			// render all todos to view
+			// render();
+		});
+	});
+});
