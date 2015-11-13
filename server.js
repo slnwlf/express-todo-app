@@ -5,11 +5,17 @@
 
 var mongoose = require('mongoose');
 
+var hbs = require('hbs');
+
 // This variable points it to the JSON
 
 var Todo = require('./models/todo');
 
 // This is the connection string, with the path to the named db
+
+app.use(express.static(__dirname + '/public'));
+
+// app.use('/static', express.static(__dirname + '/public'));
 
 mongoose.connect('mongodb://localhost/hellafresh');
 
@@ -29,6 +35,10 @@ app.use(bodyParser.urlencoded({
 ////////////////
 // GET ROUTES //
 ////////////////
+
+app.get('/', function(req, res) {
+	res.render('index');
+});
 
 // get all todos
 app.get('/api/todos', function(req, res) {
@@ -71,46 +81,50 @@ app.post('/api/todos', function(req, res) {
 	});
 });
 
-/////////////////////
-// Delete routes ////
-/////////////////////
+// for update: submit event on `.update-book` form
 
-  // delete todo
-  app.delete('/api/todos/:id', function (req, res) {
-    // get todo id from url params (`req.params`)
-    var todoId = req.params.id;
+			/////////////////////
+			// Delete routes ////
+			/////////////////////
 
-    // find todo in db by id and remove
-    Todo.findOneAndRemove({ _id: todoId }, function (err, deletedTodo) {
-      res.json(deletedTodo);
-    });
-  });
+			// delete todo
+			app.delete('/api/todos/:id', function(req, res) {
+				// get todo id from url params (`req.params`)
+				var todoId = req.params.id;
+
+				// find todo in db by id and remove
+				Todo.findOneAndRemove({
+					_id: todoId
+				}, function(err, deletedTodo) {
+					res.json(deletedTodo);
+				});
+			});
 
 
-//////////////////////
-//// Put routes //////
-//////////////////////
+			//////////////////////
+			//// Put routes //////
+			//////////////////////
 
-// update todo
-app.put('/api/todos/:id', function(req, res) {
-	// get todo id from url params (`req.params`)
-	var todoId = req.params.id;
+			// update todo
+			app.put('/api/todos/:id', function(req, res) {
+				// get todo id from url params (`req.params`)
+				var todoId = req.params.id;
 
-	// find todo in db by id
-	Todo.findOne({
-		_id: todoId
-	}, function(err, foundTodo) {
-		// update the todos's attributes
-		foundTodo.task = req.body.task;
-		foundTodo.description = req.body.description;
+				// find todo in db by id
+				Todo.findOne({
+					_id: todoId
+				}, function(err, foundTodo) {
+					// update the todos's attributes
+					foundTodo.task = req.body.task;
+					foundTodo.description = req.body.description;
 
-		// save updated todo in db
-		foundTodo.save(function(err, savedTodo) {
-			res.json(savedTodo);
-		});
-	});
-});
+					// save updated todo in db
+					foundTodo.save(function(err, savedTodo) {
+						res.json(savedTodo);
+					});
+				});
+			});
 
-var server = app.listen(process.env.PORT || 3000, function() {
-	console.log('Example app listening at http://localhost:3000/');
-});
+			var server = app.listen(process.env.PORT || 3000, function() {
+				console.log('Example app listening at http://localhost:3000/');
+			});
