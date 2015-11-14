@@ -30,10 +30,14 @@ $(function() {
 			console.log(data);
 
 			// add new book to `allTodos`
+			$('#todo-list').append(todoHtml);
 			allTodos.push(data);
-
 			// render all todos to view
-			// render();
+			//   render();
 		});
+
+		// reset the form
+		$createTodo[0].reset();
+		$createTodo.find('input').first().focus();
 	});
 });

@@ -73,60 +73,67 @@ app.get('/api/todos/:id', function(req, res) {
 
 
 // create new todo
+ 
 app.post('/api/todos', function(req, res) {
 	// create new todo with form data (`req.body`)
 	var newTodo = new Todo(req.body);
 
 	// save new todo in db
 	newTodo.save(function(err, savedTodo) {
-		res.json(savedTodo);
+		if (err) {
+			res.status(500).json({
+				error: err.message
+			});
+		} else {
+			res.json(savedTodo);
+		}
 	});
 });
 
 // for update: submit event on `.update-book` form
 
-			/////////////////////
-			// Delete routes ////
-			/////////////////////
+/////////////////////
+// Delete routes ////
+/////////////////////
 
-			// delete todo
-			app.delete('/api/todos/:id', function(req, res) {
-				// get todo id from url params (`req.params`)
-				var todoId = req.params.id;
+// delete todo
+app.delete('/api/todos/:id', function(req, res) {
+	// get todo id from url params (`req.params`)
+	var todoId = req.params.id;
 
-				// find todo in db by id and remove
-				Todo.findOneAndRemove({
-					_id: todoId
-				}, function(err, deletedTodo) {
-					res.json(deletedTodo);
-				});
-			});
+	// find todo in db by id and remove
+	Todo.findOneAndRemove({
+		_id: todoId
+	}, function(err, deletedTodo) {
+		res.json(deletedTodo);
+	});
+});
 
 
-			//////////////////////
-			//// Put routes //////
-			//////////////////////
+//////////////////////
+//// Put routes //////
+//////////////////////
 
-			// update todo
-			app.put('/api/todos/:id', function(req, res) {
-				// get todo id from url params (`req.params`)
-				var todoId = req.params.id;
+// update todo
+app.put('/api/todos/:id', function(req, res) {
+	// get todo id from url params (`req.params`)
+	var todoId = req.params.id;
 
-				// find todo in db by id
-				Todo.findOne({
-					_id: todoId
-				}, function(err, foundTodo) {
-					// update the todos's attributes
-					foundTodo.task = req.body.task;
-					foundTodo.description = req.body.description;
+	// find todo in db by id
+	Todo.findOne({
+		_id: todoId
+	}, function(err, foundTodo) {
+		// update the todos's attributes
+		foundTodo.task = req.body.task;
+		foundTodo.description = req.body.description;
 
-					// save updated todo in db
-					foundTodo.save(function(err, savedTodo) {
-						res.json(savedTodo);
-					});
-				});
-			});
+		// save updated todo in db
+		foundTodo.save(function(err, savedTodo) {
+			res.json(savedTodo);
+		});
+	});
+});
 
-			var server = app.listen(process.env.PORT || 3000, function() {
-				console.log('Example app listening at http://localhost:3000/');
-			});
+var server = app.listen(process.env.PORT || 3000, function() {
+	console.log('Example app listening at http://localhost:3000/');
+});
